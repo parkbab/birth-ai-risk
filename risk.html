@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>출산 리스크 케어 시스템</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px; width: 100%; background-color: #4CAF50; color: white; border: none; border-radius: 5px; }
+    #result { margin-top: 20px; font-weight: bold; font-size: 18px; white-space: pre-line; }
+    a { color: blue; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <h2>AI Care System for 仁川</h2>
+
+  <label for="age">나이</label>
+  <input type="number" id="age" placeholder="예: 35">
+
+  <label for="condition">건강 상태</label>
+  <select id="condition">
+    <option value="none">문제 없음</option>
+    <option value="highblood">고혈압</option>
+    <option value="diabetes">당뇨</option>
+    <option value="both">고혈압 + 당뇨</option>
+  </select>
+
+  <label for="region">거주 지역</label>
+  <select id="region">
+    <option value="중구">중구</option>
+    <option value="동구">동구</option>
+    <option value="미추홀구">미추홀구</option>
+    <option value="연수구">연수구</option>
+    <option value="남동구">남동구</option>
+    <option value="부평구">부평구</option>
+    <option value="계양구">계양구</option>
+    <option value="서구">서구</option>
+    <option value="강화군">강화군</option>
+    <option value="옹진군">옹진군</option>
+  </select>
+
+  <label for="income">월 소득 (만원)</label>
+  <input type="number" id="income" placeholder="예: 250">
+
+  <button onclick="analyzeRisk()">평가하기</button>
+
+  <div id="result"></div>
+
+  <script>
+    function analyzeRisk() {
+      const age = parseInt(document.getElementById("age").value);
+      const condition = document.getElementById("condition").value;
+      const region = document.getElementById("region").value;
+      const income = parseInt(document.getElementById("income").value);
+      let risk = "";
+      let support = "";
+
+      if (isNaN(age)) {
+        document.getElementById("result").innerText = "나이를 입력해주세요.";
+        return;
+      }
+
+      // 위험도 평가
+      if (age < 35 && condition === "none") {
+        risk = "저위험군입니다. 정상적인 출산 가능성이 높습니다.";
+      } else if (age >= 35 || condition !== "none") {
+        risk = "중위험군입니다. 정기 검진과 주의가 필요합니다.";
+      }
+      if (age >= 40 || condition === "both") {
+        risk = "고위험군입니다. 의료기관과의 긴밀한 상담이 필요합니다.";
+      }
+
+      // 정책 추천
+      if (income <= 200) {
+        support += `💡 [${region}] 거주 저소득 산모 조리비 지원 대상입니다.\n👉 <a href="https://www.incheon.go.kr/health/HE020101" target="_blank">자세히 보기</a>\n\n`;
+      }
+
+      if (region === "부평구") {
+        support += "💡 부평구는 출산 장려금 최대 100만원까지 지원됩니다.\n👉 <a href=\"https://www.icbp.go.kr/\" target=\"_blank\">부평구청 출산 지원 안내</a>\n\n";
+      }
+
+      document.getElementById("result").innerHTML = `${risk}<br><br>추천 정책:<br>${support || "해당되는 맞춤 정책이 없습니다."}`;
+    }
+  </script>
+
+</body>
+</html>
